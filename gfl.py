@@ -18,12 +18,10 @@ birthday = open('ascii/birthday.txt', 'r').read()
 starArray = []
 
 def drawHappyBirthday(stdscr, maxY, maxX):
-    logging.debug("Max Y, X: %s, %s" % (maxY, maxX))
     stdscr.addstr(birthday)
 
 def drawStars(stdscr, maxY, maxX):
     global starArray
-    logging.debug("Max Y, X: %s, %s" % (maxY, maxX))
     for ittr in range(0, 100):
         randomY = random.randrange(maxY)
         randomX = random.randrange(maxX)
@@ -41,7 +39,6 @@ def twinkleRandomStar(stdscr):
             stdscr.addch(randCoordinates[0], randCoordinates[1], curses.ACS_DIAMOND, curses.A_DIM)
 
 def drawHeart(stdscr, maxY, maxX):
-    logging.debug("Max Y, X: %s, %s" % (maxY, maxX))
     stdscr.addstr(heart)
 
 def main():
@@ -57,6 +54,8 @@ def main():
     maxY = stdscr.getmaxyx()[0];
     maxX = stdscr.getmaxyx()[1];
 
+    logging.debug("Max Y, X: %s, %s" % (maxY, maxX))
+    
     heartWin = curses.newwin(38, 83, int((maxY / 2) - (38 / 2) + 4), int((maxX / 2) - (83 / 2)))
     birthdayWin = curses.newwin(7, 129, 0, int((maxX / 2) - (129/2)))
     try:
