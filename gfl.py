@@ -12,8 +12,8 @@ import random
 import time
 import curses
 
-heart = open('heart.txt', 'r').read()
-birthday = open('birthday.txt', 'r').read()
+heart = open('ascii/heart.txt', 'r').read()
+birthday = open('ascii/birthday.txt', 'r').read()
 
 starArray = []
 
@@ -46,7 +46,7 @@ def drawHeart(stdscr, maxY, maxX):
 
 def main():
     random.seed(time.time())
-    logging.basicConfig(filename="test.log", level=logging.DEBUG, format='%(asctime)s %(message)s')
+    logging.basicConfig(filename="gfl.log", level=logging.DEBUG, format='%(asctime)s %(message)s')
 
     stdscr = curses.initscr()
     curses.start_color()
