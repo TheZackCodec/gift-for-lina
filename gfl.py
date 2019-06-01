@@ -12,6 +12,8 @@ import random
 import time
 import curses
 from PIL import Image
+from multiprocessing import Process
+from playsound import playsound
 
 heart = open('ascii/heart.txt', 'r').read()
 birthday = open('ascii/birthday.txt', 'r').read()
@@ -50,6 +52,9 @@ def endSession():
     curses.nocbreak()
     curses.echo()
     curses.endwin()
+
+def playMusic():
+    playsound('audio/Daulton Hopkins - Maroon.mp3')
 
 def scene1(stdscr):
     heartWin = curses.newwin(38, 83, int((maxY / 2) - (38 / 2) + 4), int((maxX / 2) - (83 / 2)))
@@ -95,8 +100,9 @@ def main():
 
     logging.debug("Max Y, X: %s, %s" % (maxY, maxX))
 
-
     try:
+        proc = Process(target=playMusic, name="Audio Player")
+        proc.start()
         scene1(stdscr)
         slideShow1()
         endSession()
@@ -104,9 +110,13 @@ def main():
     except KeyboardInterrupt:
         logging.warn("Keyboard Interrupt Event Detected...shutting down")
         endSession()
-    except:
-        logging.error("%s" % sys.exc_info()[0])
+
+    except Exception as e:
+        logging.error("%s" % e)
         endSession()
+    finally:
+        logging.warn("Killing Child Process %s with pid %s" % (proc.name, proc.pid))
+        proc.terminate()
 
 if __name__ == "__main__":
     main()
