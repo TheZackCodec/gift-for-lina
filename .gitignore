@@ -1,3 +1,5 @@
 env
 *.log
 audio/AudacitySongData.zip
+audio/SongTimestamps.aup
+audio/SongTimestamps_data/
