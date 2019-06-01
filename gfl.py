@@ -131,7 +131,7 @@ def main():
         logging.error("%s" % e)
         endSession()
     finally:
-        logging.warn("Killing Child Process %s with pid %s" % (proc.name, proc.pid))
+        logging.warning("Killing Child Process %s with pid %s" % (proc.name, proc.pid))
         proc.terminate()
 
 if __name__ == "__main__":
