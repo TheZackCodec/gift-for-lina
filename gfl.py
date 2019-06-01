@@ -94,7 +94,7 @@ def slideShow1():
 
     for x in range(0,7):
         prefetchArr[x].show()
-        time.sleep(3.6)
+        time.sleep(3.7)
 
     os.system('pkill display')
 
