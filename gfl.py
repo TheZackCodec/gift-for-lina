@@ -19,6 +19,7 @@ heart = open('ascii/heart.txt', 'r').read()
 birthday = open('ascii/birthday.txt', 'r').read()
 
 starArray = []
+prefetchArr = []
 maxY = None
 maxX = None
 
@@ -61,7 +62,7 @@ def scene1(stdscr):
     birthdayWin = curses.newwin(7, 129, 0, int((maxX / 2) - (129/2)))
 
     drawStars(stdscr, maxY, maxX)
-    epoch = time.time() + 5
+    epoch = time.time() + 29.6
     while(time.time() < epoch):
         drawHeart(heartWin)
         drawHappyBirthday(birthdayWin)
@@ -73,15 +74,28 @@ def scene1(stdscr):
         birthdayWin.erase()
         heartWin.erase()
 
+def prefetchPhotos():
+    global prefetchArr
+    ittr = 1
+
+    for dirpath, dirnames, files in os.walk('img/'):
+        for file in files:
+            img = Image.open("img/%s" % file)
+            logging.debug('Image %s loaded with dimensions %s x %s' % (img.filename, img.size[0], img.size[1]))
+            img = img.resize([int(img.size[0] / 2), int(img.size[1] / 2)], Image.BICUBIC)
+            logging.debug('Image resized to %s x %s' % (img.size[0], img.size[1]))
+            prefetchArr.append(img)
+            ittr = ittr + 1
+
+    logging.debug('prefetchArr Array: %s' % prefetchArr)
+
 def slideShow1():
-    for x in range(1, 20):
-        img = Image.open('img/%s.jpg' % x)
-        logging.debug('Image %s loaded with dimensions %s x %s' % (img.filename, img.size[0], img.size[1]))
-        img = img.resize([int(img.size[0] / 2), int(img.size[1] / 2)], Image.BICUBIC)
-        logging.debug('Image resized to %s x %s' % (img.size[0], img.size[1]))
-        img.show()
-        time.sleep(1)
-    os.system('dialog --msgbox "Continue..." 10 50')
+    global prefetchArr
+
+    for x in range(0,7):
+        prefetchArr[x].show()
+        time.sleep(3.6)
+
     os.system('pkill display')
 
 def main():
@@ -102,7 +116,9 @@ def main():
 
     try:
         proc = Process(target=playMusic, name="Audio Player")
+        prefetchPhotos()
         proc.start()
+        time.sleep(15.6)
         scene1(stdscr)
         slideShow1()
         endSession()
