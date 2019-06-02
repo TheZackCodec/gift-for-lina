@@ -118,6 +118,7 @@ def main():
         proc = Process(target=playMusic, name="Audio Player")
         prefetchPhotos()
         proc.start()
+        logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
         time.sleep(15.6)
         scene1(stdscr)
         slideShow1()
