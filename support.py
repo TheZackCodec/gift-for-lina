@@ -28,15 +28,15 @@ class support():
 
         random.seed(time.time())
 
-        for hour in range(1, 12):
-            for minute in range(0, 55, 5):
-                logging.debug('Hour: %s\tMinute: %s' % (hour, minute))
-                if(minute % 2 == 0 and hour < 10):
-                    self.clock.append(open('ascii/clockAnimation/clock%s0%s.txt' % (hour, minute)).read())
-                elif(minute % 2 == 0 and hour > 10):
-                    self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
-                else:
-                    self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
+        # for hour in range(1, 12):
+        #     for minute in range(0, 55, 5):
+        #         logging.debug('Hour: %s\tMinute: %s' % (hour, minute))
+        #         if(minute % 2 == 0 and hour < 10):
+        #             self.clock.append(open('ascii/clockAnimation/clock%s0%s.txt' % (hour, minute)).read())
+        #         elif(minute % 2 == 0 and hour > 10):
+        #             self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
+        #         else:
+        #             self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
 
         logging.debug("Loaded %s Clock Files" % len(self.clock))
 
