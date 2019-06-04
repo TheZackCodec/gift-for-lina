@@ -16,6 +16,8 @@ from playsound import playsound
 class support():
     heart = open('ascii/heart.txt', 'r').read()
     birthday = open('ascii/birthday.txt', 'r').read()
+    love = open('ascii/love.txt', 'r').read()
+    clock = []
 
     """ Suporting Functions object"""
     def __init__(self, maxY, maxX):
@@ -23,6 +25,10 @@ class support():
         self.maxY = maxY
         self.maxX = maxX
         random.seed(time.time())
+        for hour in range(1, 12):
+            for minute in range(0, 12, 5):
+                self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
+        logging.debug("Loaded %s Clock Files" % len(self.clock))
 
     def drawHappyBirthday(self, stdscr):
         stdscr.addstr(self.birthday)
@@ -46,56 +52,97 @@ class support():
     def drawHeart(self, stdscr):
         stdscr.addstr(self.heart)
 
+    def drawLove(self, stdscr):
+        stdscr.addstr(self.love)
+
+    def drawClock(self, stdscr):
+        for x in range(0, len(self.clock)):
+            stdscr.addstr(self.clock[x])
+            stdscr.refresh()
+            time.sleep(.175)
+            stdscr.erase()
+
     def playMusic(self):
         playsound('audio/Daulton Hopkins - Maroon.mp3')
 
     def heartBeats(self, stdscr):
         epoch = time.time() + 15.6
-        pos = self.maxX
+        pos = self.maxX - 1
         centerY = int(self.maxY / 2)
         while(time.time() < epoch):
-            for x in range(self.maxX - 1, 0, -1):
-                if(x != pos):
-                    stdscr.addch(centerY, x, '-')
+            stdscr.addch(centerY, pos, '-')
             stdscr.refresh()
-            time.sleep(.05)
+            time.sleep(15.6 / (self.maxX / 2))
             pos = pos - 1
             tte = round(epoch - time.time(), 1)
-            if(tte == 2.9 or tte == 1.0):
+            if(tte == 2.9 or tte == .9):
                 for y in range(0, 6, 1):
                     stdscr.addch(centerY - y, pos, '-')
                     stdscr.addch(centerY + y, pos - 12, '-')
-                    stdscr.delch(centerY, pos)
                     pos = pos - 1
                 for y in range(6, 0, -1):
                     stdscr.addch(centerY - y, pos, '-')
                     stdscr.addch(centerY + y, pos - 12, '-')
-                    stdscr.delch(centerY, pos)
                     pos = pos - 1
-                pos = pos + 6
-
-            stdscr.delch(centerY, pos)
+                pos = pos - 12
         stdscr.erase()
 
 
     def scene1(self, stdscr):
+        stdscr.erase()
         heartWin = curses.newwin(38, 83, int((self.maxY / 2) - (38 / 2) + 4), int((self.maxX / 2) - (83 / 2)))
-        birthdayWin = curses.newwin(7, 129, 0, int((self.maxX / 2) - (129/2)))
 
         self.drawStars(stdscr)
-        epoch = time.time() + 29.6
+        epoch = time.time() + 7.6
         while(time.time() < epoch):
             self.drawHeart(heartWin)
-            self.drawHappyBirthday(birthdayWin)
             stdscr.refresh()
-            birthdayWin.refresh()
             heartWin.refresh()
             self.twinkleRandomStar(stdscr)
             time.sleep(.15)
-            birthdayWin.erase()
             heartWin.erase()
+        heartWin.erase()
+        heartWin.refresh()
+
+    def scene2(self, stdscr):
+        birthdayWin = curses.newwin(7, 129, int((self.maxY / 2) - (7 / 2) + 2), int((self.maxX / 2) - (129/2)))
+
+        epoch = time.time() + 7.6
+        while(time.time() < epoch):
+            self.drawHappyBirthday(birthdayWin)
+            stdscr.refresh()
+            birthdayWin.refresh()
+            self.twinkleRandomStar(stdscr)
+            time.sleep(.15)
+            birthdayWin.erase()
+        birthdayWin.erase()
+        birthdayWin.refresh()
+
+    def scene3(self, stdscr):
+        loveWin = curses.newwin(7, 63, int((self.maxY / 2) - (7 / 2) + 2), int((self.maxX / 2) - (63/2)))
+
+        epoch = time.time() + 14.2
+        while(time.time() < epoch):
+            self.drawLove(loveWin)
+            stdscr.refresh()
+            loveWin.refresh()
+            self.twinkleRandomStar(stdscr)
+            time.sleep(.15)
+            loveWin.erase()
+
+    def scene4(self, stdscr):
+        clockWin = curses.newwin(14, 23, self.maxY - 14, self.maxX- 23)
+
+        epoch = time.time() + 14.2
+        while(time.time() < epoch):
+            self.drawClock(clockWin)
 
     def slideShow1(self, photoArr):
+        for x in range(0,7):
+            photoArr[x].show()
+            time.sleep(3.7)
+
+    def slideShow2(self, photoArr):
         for x in range(0,7):
             photoArr[x].show()
             time.sleep(3.7)
