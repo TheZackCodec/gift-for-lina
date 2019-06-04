@@ -27,8 +27,8 @@ def prefetchPhotos():
     ittr = 1
 
     for dirpath, dirnames, files in os.walk('img/'):
-        for file in files:
-            img = Image.open("img/%s" % file)
+        for file in range(1, len(files)):
+            img = Image.open("img/%s.jpg" % file)
             logging.debug('Image %s loaded with dimensions %s x %s' % (img.filename, img.size[0], img.size[1]))
             img = img.resize([int(img.size[0] / 2), int(img.size[1] / 2)], Image.BICUBIC)
             logging.debug('Image resized to %s x %s' % (img.size[0], img.size[1]))
@@ -58,9 +58,12 @@ def main():
         prefetchPhotos()
         proc.start()
         logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
-        # scenes.heartBeats(stdscr)
+        scenes.heartBeats(stdscr)
         scenes.scene1(stdscr)
+        scenes.scene2(stdscr)
+        scenes.scene3(stdscr)
         scenes.slideShow1(prefetchArr)
+        # scenes.scene4(stdscr)
         endSession()
 
     except KeyboardInterrupt:
