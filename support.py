@@ -12,6 +12,7 @@ import curses
 import logging
 import os
 from playsound import playsound
+from platform import system
 
 class support():
 
@@ -59,7 +60,12 @@ class support():
             else:
                 stdscr.addch(randCoordinates[0], randCoordinates[1], curses.ACS_DIAMOND, curses.A_DIM)
 
-    def drawHeart(self, stdscr):
+    def drawHeart(self, stdscr):if system == 'Windows':
+    playsound = _playsoundWin
+elif system == 'Darwin':
+    playsound = _playsoundOSX
+else:
+    playsound = _playsoundNix
         stdscr.addstr(self.heart)
 
     def drawLove(self, stdscr):
@@ -73,7 +79,11 @@ class support():
             stdscr.erase()
 
     def playMusic(self):
-        playsound('audio/maroon.mp3')
+        system = system()
+        if (system == 'Windows' or system == 'Darwin'):
+            playsound('audio/maroon.mp3', False)
+        else:
+            playsound('audio/maroon.mp3')
 
     def heartBeats(self, stdscr):
         epoch = time.time() + 15.6
