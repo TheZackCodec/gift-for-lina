@@ -57,7 +57,8 @@ def main():
         proc = Process(target=scenes.playMusic, name="Audio Player")
         prefetchPhotos()
         proc.start()
-        proc.join()
+        while(proc.is_alive() != True):
+            pass
         logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
         scenes.heartBeats(stdscr)
         scenes.scene1(stdscr)
