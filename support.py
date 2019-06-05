@@ -90,7 +90,7 @@ class support():
     def playMusic(self):
         sys = system()
         if(self.isCompatible()):
-            logging.warn("%s system detected...switching to asynchronous audio operation" % s)
+            logging.warn("%s system detected...switching to asynchronous audio operation" % sys)
             playsound('audio/maroon.mp3', False)
         else:
             logging.warn("*nix system detected...falling back to audio child process")
