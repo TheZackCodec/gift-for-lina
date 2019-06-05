@@ -74,10 +74,12 @@ class support():
             stdscr.erase()
 
     def playMusic(self):
-        system = system()
-        if(system == 'Windows' or system == 'Darwin'):
+        sys = system()
+        if(sys == 'Windows' or sys == 'Darwin'):
+            logging.warn("%s system detected...switching to asynchronous operation")
             playsound('audio/maroon.mp3', False)
         else:
+            logging.warn("*nix system detected...falling back to child process")
             playsound('audio/maroon.mp3')
 
     def heartBeats(self, stdscr):
