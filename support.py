@@ -20,7 +20,7 @@ class support():
     birthday = open('ascii/birthday.txt', 'r').read()
     love = open('ascii/love.txt', 'r').read()
     clock = []
-
+    
     """ Suporting Functions object"""
     def __init__(self, maxY, maxX):
         self.starArray = []
@@ -30,6 +30,9 @@ class support():
         random.seed(time.time())
 
         self.sys = system()
+
+        if(self.isCompatible()):
+
         # for hour in range(1, 12):
         #     for minute in range(0, 55, 5):
         #         logging.debug('Hour: %s\tMinute: %s' % (hour, minute))
@@ -162,7 +165,7 @@ class support():
         for x in range(0,7):
             photoArr[x].show()
             time.sleep(3.7)
-            
+
         os.system('pkill display')
 
     def slideShow2(self, photoArr):
