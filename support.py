@@ -20,7 +20,7 @@ class support():
     birthday = open('ascii/birthday.txt', 'r').read()
     love = open('ascii/love.txt', 'r').read()
     clock = []
-    
+
     """ Suporting Functions object"""
     def __init__(self, maxY, maxX):
         self.starArray = []
@@ -32,7 +32,11 @@ class support():
         self.sys = system()
 
         if(self.isCompatible()):
+            self.imageViewer = 'preview'
+        else:
+            self.imageViewer = 'display'
 
+        logging.warn("Detected %s image viewer" % self.imageViewer)
         # for hour in range(1, 12):
         #     for minute in range(0, 55, 5):
         #         logging.debug('Hour: %s\tMinute: %s' % (hour, minute))
@@ -44,6 +48,9 @@ class support():
         #             self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
 
         logging.debug("Loaded %s Clock Files" % len(self.clock))
+
+    def __killImageWindows(self):
+        os.system('pkill %s' % self.imageViewer)
 
     def isCompatible(self):
         return self.sys == 'Windows' or self.sys == 'Darwin'
@@ -83,7 +90,7 @@ class support():
     def playMusic(self):
         sys = system()
         if(self.isCompatible()):
-            logging.warn("%s system detected...switching to asynchronous audio operation")
+            logging.warn("%s system detected...switching to asynchronous audio operation" % s)
             playsound('audio/maroon.mp3', False)
         else:
             logging.warn("*nix system detected...falling back to audio child process")
@@ -166,11 +173,11 @@ class support():
             photoArr[x].show()
             time.sleep(3.7)
 
-        os.system('pkill display')
+        self.__killImageWindows()
 
     def slideShow2(self, photoArr):
         for x in range(0,7):
             photoArr[x].show()
             time.sleep(3.7)
 
-        os.system('pkill display')
+        self.__killImageWindows()
