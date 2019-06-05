@@ -32,7 +32,7 @@ class support():
         self.sys = system()
 
         if(self.isCompatible()):
-            self.imageViewer = 'preview'
+            self.imageViewer = 'Preview'
         else:
             self.imageViewer = 'display'
 
