@@ -60,12 +60,7 @@ class support():
             else:
                 stdscr.addch(randCoordinates[0], randCoordinates[1], curses.ACS_DIAMOND, curses.A_DIM)
 
-    def drawHeart(self, stdscr):if system == 'Windows':
-    playsound = _playsoundWin
-elif system == 'Darwin':
-    playsound = _playsoundOSX
-else:
-    playsound = _playsoundNix
+    def drawHeart(self, stdscr):
         stdscr.addstr(self.heart)
 
     def drawLove(self, stdscr):
@@ -80,7 +75,7 @@ else:
 
     def playMusic(self):
         system = system()
-        if (system == 'Windows' or system == 'Darwin'):
+        if(system == 'Windows' or system == 'Darwin'):
             playsound('audio/maroon.mp3', False)
         else:
             playsound('audio/maroon.mp3')
