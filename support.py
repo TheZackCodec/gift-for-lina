@@ -73,7 +73,7 @@ class support():
             stdscr.erase()
 
     def playMusic(self):
-        playsound('audio/maroon.mp3', False)
+        playsound('audio/maroon.mp3')
 
     def heartBeats(self, stdscr):
         epoch = time.time() + 15.6
