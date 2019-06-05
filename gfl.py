@@ -54,10 +54,13 @@ def main():
     scenes = support(maxY, maxX)
 
     try:
-        proc = Process(target=scenes.playMusic, name="Audio Player")
-        prefetchPhotos()
-        proc.start()
-        logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
+        if(scenes.isCompatible() == False):
+            proc = Process(target=scenes.playMusic, name="Audio Player")
+            prefetchPhotos()
+            proc.start()
+            logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
+        else:
+            scenes.playMusic()
         scenes.heartBeats(stdscr)
         scenes.scene1(stdscr)
         scenes.scene2(stdscr)
@@ -74,8 +77,9 @@ def main():
         logging.error("%s" % e)
         endSession()
     finally:
-        logging.warning("Killing Child Process %s with pid %s" % (proc.name, proc.pid))
-        proc.terminate()
+        if(scenes.isCompatible() == False):
+            logging.warning("Killing Child Process %s with pid %s" % (proc.name, proc.pid))
+            proc.terminate()
 
 if __name__ == "__main__":
     main()

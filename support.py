@@ -29,6 +29,7 @@ class support():
 
         random.seed(time.time())
 
+        self.sys = system()
         # for hour in range(1, 12):
         #     for minute in range(0, 55, 5):
         #         logging.debug('Hour: %s\tMinute: %s' % (hour, minute))
@@ -40,6 +41,9 @@ class support():
         #             self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
 
         logging.debug("Loaded %s Clock Files" % len(self.clock))
+
+    def isCompatible(self):
+        return self.sys == 'Windows' or self.sys == 'Darwin'
 
     def drawHappyBirthday(self, stdscr):
         stdscr.addstr(self.birthday)
@@ -75,11 +79,11 @@ class support():
 
     def playMusic(self):
         sys = system()
-        if(sys == 'Windows' or sys == 'Darwin'):
-            logging.warn("%s system detected...switching to asynchronous operation")
+        if(self.isCompatible()):
+            logging.warn("%s system detected...switching to asynchronous audio operation")
             playsound('audio/maroon.mp3', False)
         else:
-            logging.warn("*nix system detected...falling back to child process")
+            logging.warn("*nix system detected...falling back to audio child process")
             playsound('audio/maroon.mp3')
 
     def heartBeats(self, stdscr):
@@ -158,6 +162,8 @@ class support():
         for x in range(0,7):
             photoArr[x].show()
             time.sleep(3.7)
+            
+        os.system('pkill display')
 
     def slideShow2(self, photoArr):
         for x in range(0,7):
