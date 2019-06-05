@@ -54,8 +54,8 @@ def main():
     scenes = support(maxY, maxX)
 
     try:
-        proc = Process(target=scenes.playMusic, name="Audio Player")
         prefetchPhotos()
+        proc = Process(target=scenes.playMusic, name="Audio Player")
         proc.start()
         while(proc.is_alive() != True):
             pass
