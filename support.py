@@ -36,7 +36,7 @@ class support():
         else:
             self.imageViewer = 'display'
 
-        logging.warn("Detected %s image viewer" % self.imageViewer)
+        logging.warn("Detected \"%s\" image viewer" % self.imageViewer)
         # for hour in range(1, 12):
         #     for minute in range(0, 55, 5):
         #         logging.debug('Hour: %s\tMinute: %s' % (hour, minute))
