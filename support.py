@@ -98,6 +98,8 @@ class support():
 
     def heartBeats(self, stdscr):
         epoch = time.time() + 15.6
+        beat1 = round(time.time() + 12.7, 1)
+        beat2 = round(time.time() + 14.7, 1)
         pos = self.maxX - 1
         centerY = int(self.maxY / 2)
         while(time.time() < epoch):
@@ -105,8 +107,8 @@ class support():
             stdscr.refresh()
             time.sleep(15.6 / (self.maxX / 2))
             pos = pos - 1
-            tte = round(epoch - time.time(), 1)
-            if(tte == 2.9 or tte == .9):
+            curTime = round(time.time(), 1)
+            if(curTime == beat1 or curTime == beat2):
                 for y in range(0, 6, 1):
                     stdscr.addch(centerY - y, pos, '-')
                     stdscr.addch(centerY + y, pos - 12, '-')

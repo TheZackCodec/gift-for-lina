@@ -54,13 +54,12 @@ def main():
     scenes = support(maxY, maxX)
 
     try:
+        prefetchPhotos()
         if(scenes.isCompatible() == False):
             proc = Process(target=scenes.playMusic, name="Audio Player")
-            prefetchPhotos()
             proc.start()
             logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
         else:
-            prefetchPhotos()
             scenes.playMusic()
         scenes.heartBeats(stdscr)
         scenes.scene1(stdscr)
