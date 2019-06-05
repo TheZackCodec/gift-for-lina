@@ -54,12 +54,8 @@ def main():
     scenes = support(maxY, maxX)
 
     try:
-        prefetchPhotos()
-        proc = Process(target=scenes.playMusic, name="Audio Player")
-        proc.start()
-        while(proc.is_alive() != True):
-            pass
-        logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
+        scenes.playMusic()
+        # logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
         scenes.heartBeats(stdscr)
         scenes.scene1(stdscr)
         scenes.scene2(stdscr)
