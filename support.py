@@ -99,7 +99,7 @@ class support():
     def heartBeats(self, stdscr):
         epoch = time.time() + 15.6
         beat1 = round(time.time() + 12.7, 1)
-        beat2 = round(time.time() + 14.7, 1)
+        beat2 = round(time.time() + 14.6, 1)
         pos = self.maxX - 1
         centerY = int(self.maxY / 2)
         while(time.time() < epoch):
