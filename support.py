@@ -107,8 +107,7 @@ class support():
             stdscr.refresh()
             time.sleep(15.6 / (self.maxX / 2))
             pos = pos - 1
-            curTime = round(time.time(), 1)
-            if(curTime == beat1 or curTime == beat2):
+            if(round(time.time(), 1) == beat1 or round(time.time(), 1) == beat2):
                 for y in range(0, 6, 1):
                     stdscr.addch(centerY - y, pos, '-')
                     stdscr.addch(centerY + y, pos - 12, '-')
