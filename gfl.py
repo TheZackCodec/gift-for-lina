@@ -27,7 +27,7 @@ def prefetchPhotos():
     ittr = 1
 
     for dirpath, dirnames, files in os.walk('img/'):
-        for file in range(1, len(files)):
+        for file in range(1, len(files) + 1):
             img = Image.open("img/%s.jpg" % file)
             logging.debug('Image %s loaded with dimensions %s x %s' % (img.filename, img.size[0], img.size[1]))
             img = img.resize([int(img.size[0] / 2), int(img.size[1] / 2)], Image.BICUBIC)
@@ -54,16 +54,23 @@ def main():
     scenes = support(maxY, maxX)
 
     try:
-        proc = Process(target=scenes.playMusic, name="Audio Player")
         prefetchPhotos()
-        proc.start()
-        logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
-        # scenes.heartBeats(stdscr)
-        # scenes.scene1(stdscr)
-        # scenes.scene2(stdscr)
-        # scenes.scene3(stdscr)
-        # scenes.slideShow1(prefetchArr)
+        if(scenes.isCompatible()):
+            scenes.playMusic()
+        else:
+            proc = Process(target=scenes.playMusic, name="Audio Player")
+            proc.start()
+            logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
+        scenes.heartBeats(stdscr)
+        scenes.scene1(stdscr)
+        scenes.scene2(stdscr)
+        scenes.scene3(stdscr)
+        scenes.playSlideShow(prefetchArr, 0, 8)
+        scenes.blankScreen(stdscr, 1.06)
         scenes.scene4(stdscr)
+        scenes.playSlideShow(prefetchArr, 9, 25)
+        scenes.blankScreen(stdscr, 15.36)
+        scenes.scene5(stdscr)
         endSession()
 
     except KeyboardInterrupt:
@@ -74,8 +81,9 @@ def main():
         logging.error("%s" % e)
         endSession()
     finally:
-        logging.warning("Killing Child Process %s with pid %s" % (proc.name, proc.pid))
-        proc.terminate()
+        if(scenes.isCompatible() == False):
+            logging.warning("Killing Child Process %s with pid %s" % (proc.name, proc.pid))
+            proc.terminate()
 
 if __name__ == "__main__":
     main()

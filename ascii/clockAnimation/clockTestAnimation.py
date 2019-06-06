@@ -22,7 +22,7 @@ while True:
             currentMinute = (currentMinute + 5) % 60
             time.sleep(.1)
             os.system("cls")
-            
+
         currentHour = (currentHour + 1) % 12
         if currentHour == 0:
             currentHour = 12
