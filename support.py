@@ -12,6 +12,9 @@ import curses
 import logging
 import os
 from playsound import playsound
+from platform import system
+from threading import Thread
+
 
 class support():
     heart = open('ascii/heart.txt', 'r').read()
@@ -24,14 +27,42 @@ class support():
         self.starArray = []
         self.maxY = maxY
         self.maxX = maxX
+
         random.seed(time.time())
-        for hour in range(1, 12):
-            for minute in range(0, 12, 5):
-                self.clock.append(open('ascii/clockAnimation/clock%s%s.txt' % (hour, minute)).read())
+
+        if(self.isCompatible()):
+            self.imageViewer = "Preview"
+        else:
+            self.imageViewer = "display"
+        logging.debug("Detected \"%s\" image viewer" % self.imageViewer)
+
+        # for dirpath, dirnames, files in os.walk('ascii/clockAnimation'):
+        #     files.sort()
+        #     logging.debug(files)
+        #     for file in files:
+        #         self.clock.append(open("%s/%s" % (dirpath, file)).read())
+        currentHour = 1
+        currentMinute = 0
+        for x in range(12):
+            for y in range(12):
+
+                if currentMinute == 0 or currentMinute == 5:
+                    clockFileName = "ascii/clockAnimation/clock" + str(currentHour) + "0" + str(currentMinute) + ".txt"
+                else:
+                    clockFileName = "ascii/clockAnimation/clock" + str(currentHour) + str(currentMinute) + ".txt"
+
+                self.clock.append(open(clockFileName, "r").read())
+
+                currentMinute = (currentMinute + 5) % 60
+
+            currentHour = (currentHour + 1) % 12
+            if currentHour == 0:
+                currentHour = 12
+
         logging.debug("Loaded %s Clock Files" % len(self.clock))
 
-    def drawHappyBirthday(self, stdscr):
-        stdscr.addstr(self.birthday)
+    def draw(self, stdscr, str):
+        stdscr.addstr(str)
 
     def drawStars(self, stdscr):
         for ittr in range(0, 100):
@@ -49,12 +80,6 @@ class support():
             else:
                 stdscr.addch(randCoordinates[0], randCoordinates[1], curses.ACS_DIAMOND, curses.A_DIM)
 
-    def drawHeart(self, stdscr):
-        stdscr.addstr(self.heart)
-
-    def drawLove(self, stdscr):
-        stdscr.addstr(self.love)
-
     def drawClock(self, stdscr):
         for x in range(0, len(self.clock)):
             stdscr.addstr(self.clock[x])
@@ -62,19 +87,28 @@ class support():
             time.sleep(.175)
             stdscr.erase()
 
+    def isCompatible(self):
+        return system() == "Darwin"
+
     def playMusic(self):
-        playsound('audio/Daulton Hopkins - Maroon.mp3')
+        if(self.isCompatible()):
+            logging.warn("$s system detected...switching to asynchronous audio operation" % system())
+            playsound('audio/maroon.mp3', False)
+        else:
+            logging.warn("*nix system detected...falling back to audio child process")
+            playsound('audio/maroon.mp3')
+
 
     def heartBeats(self, stdscr):
         epoch = time.time() + 15.6
         pos = self.maxX - 1
         centerY = int(self.maxY / 2)
         while(time.time() < epoch):
+            tte = round(epoch - time.time(), 1)
             stdscr.addch(centerY, pos, '-')
             stdscr.refresh()
             time.sleep(15.6 / (self.maxX / 2))
             pos = pos - 1
-            tte = round(epoch - time.time(), 1)
             if(tte == 2.9 or tte == .9):
                 for y in range(0, 6, 1):
                     stdscr.addch(centerY - y, pos, '-')
@@ -95,7 +129,7 @@ class support():
         self.drawStars(stdscr)
         epoch = time.time() + 7.6
         while(time.time() < epoch):
-            self.drawHeart(heartWin)
+            self.draw(heartWin, self.heart)
             stdscr.refresh()
             heartWin.refresh()
             self.twinkleRandomStar(stdscr)
@@ -109,7 +143,7 @@ class support():
 
         epoch = time.time() + 7.6
         while(time.time() < epoch):
-            self.drawHappyBirthday(birthdayWin)
+            self.draw(birthdayWin, self.birthday)
             stdscr.refresh()
             birthdayWin.refresh()
             self.twinkleRandomStar(stdscr)
@@ -123,28 +157,40 @@ class support():
 
         epoch = time.time() + 14.2
         while(time.time() < epoch):
-            self.drawLove(loveWin)
+            self.draw(loveWin, self.love)
             stdscr.refresh()
             loveWin.refresh()
             self.twinkleRandomStar(stdscr)
             time.sleep(.15)
             loveWin.erase()
 
+    def _animateClock(self, stdscr):
+        for clockTime in self.clock:
+            self.draw(stdscr, clockTime)
+            stdscr.refresh()
+            time.sleep(.25)
+            stdscr.erase()
+
     def scene4(self, stdscr):
         clockWin = curses.newwin(14, 23, self.maxY - 14, self.maxX- 23)
 
         epoch = time.time() + 14.2
-        while(time.time() < epoch):
-            self.drawClock(clockWin)
+        clock = Thread(name="Clock", target=self._animateClock, args=[clockWin])
+        clock.start()
+
+    def _killImageViewer(self):
+        os.system('pkill %s' % self.imageViewer)
 
     def slideShow1(self, photoArr):
         for x in range(0,7):
             photoArr[x].show()
             time.sleep(3.7)
 
+        _killImageViewer()
+
     def slideShow2(self, photoArr):
         for x in range(0,7):
             photoArr[x].show()
             time.sleep(3.7)
 
-        os.system('pkill display')
+        _killImageViewer()
