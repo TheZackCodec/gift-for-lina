@@ -27,7 +27,7 @@ def prefetchPhotos():
     ittr = 1
 
     for dirpath, dirnames, files in os.walk('img/'):
-        for file in range(1, len(files)):
+        for file in range(1, len(files) + 1):
             img = Image.open("img/%s.jpg" % file)
             logging.debug('Image %s loaded with dimensions %s x %s' % (img.filename, img.size[0], img.size[1]))
             img = img.resize([int(img.size[0] / 2), int(img.size[1] / 2)], Image.BICUBIC)
@@ -61,12 +61,16 @@ def main():
             proc = Process(target=scenes.playMusic, name="Audio Player")
             proc.start()
             logging.debug('Process %s with PID %s started' % (proc.name, proc.pid))
-        # scenes.heartBeats(stdscr)
-        # scenes.scene1(stdscr)
-        # scenes.scene2(stdscr)
-        # scenes.scene3(stdscr)
-        # scenes.slideShow1(prefetchArr)
+        scenes.heartBeats(stdscr)
+        scenes.scene1(stdscr)
+        scenes.scene2(stdscr)
+        scenes.scene3(stdscr)
+        scenes.playSlideShow(prefetchArr, 0, 8)
+        scenes.blankScreen(stdscr, 1.06)
         scenes.scene4(stdscr)
+        scenes.playSlideShow(prefetchArr, 9, 25)
+        scenes.blankScreen(stdscr, 15.36)
+        scenes.scene5(stdscr)
         endSession()
 
     except KeyboardInterrupt:
