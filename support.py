@@ -49,8 +49,8 @@ class support():
         #     logging.debug(files)
         #     for file in files:
         #         self.clock.append(open("%s/%s" % (dirpath, file)).read())
-        currentHour = 1
-        currentMinute = 0
+        currentHour = 9
+        currentMinute = 30
         for x in range(12):
             for y in range(12):
 
@@ -248,11 +248,11 @@ class support():
         logging.debug("Killing %s processes", self.imageViewer)
         os.system('pkill %s' % self.imageViewer)
 
-    def playSlideShow(self, photoArr, start, end):
+    def playSlideShow(self, photoArr, start, end, delay):
         logging.debug("Opening photos %s through %s" % (start + 1, end + 1))
         for x in range(start, end):
             photoArr[x].show()
-            time.sleep(3.7)
+            time.sleep(delay)
             if((x + 1) % 4 == 0):
                 self._killImageViewer()
 
