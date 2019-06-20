@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt update; apt install -y git python3 python3-pip dialog libgstreamer1.0-0;
-git clone https://github.com/dvigne/gift-for-lina.git /tmp/gift-for-lina;
+git clone https://github.com/TheZackCodec/gift-for-lina.git /tmp/gift-for-lina;
 cd /tmp/gift-for-lina;
 pip3 install virtualenv;
 virtualenv --system-site-packages  -p python3 env && source ./env/bin/activate;
